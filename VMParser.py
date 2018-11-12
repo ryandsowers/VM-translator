@@ -16,6 +16,7 @@ class VMParser(object):
     CMD = 0
     ARG1 = 1
     ARG2 = 2
+    MAX_ARGS = 3
 
 ############################################
 # Constructor
@@ -36,7 +37,7 @@ class VMParser(object):
         ''' returns the line's command as a string'''
         
         splitLine = line.split()
-        correctArgNum = (len(splitLine) == 1 or len(splitLine) == 3)    # check for correct number of arguments to process
+        correctArgNum = (len(splitLine) <= VMParser.MAX_ARGS)    # check for correct number of arguments to process
 
         if len(splitLine) < VMParser.ARG1:
             result = None
@@ -53,9 +54,9 @@ class VMParser(object):
         ''' returns the line's first argument as a string'''
         
         splitLine = line.split()
-        correctArgNum = (len(splitLine) == 3)       # check for correct number of arguments to process
+        correctArgNum = (len(splitLine) <= VMParser.MAX_ARGS)    # check for correct number of arguments to process
 
-        if len(splitLine) == VMParser.ARG1:
+        if len(splitLine) < VMParser.ARG2:
             result = None
         elif correctArgNum:       
             result = splitLine[VMParser.ARG1]
@@ -70,9 +71,9 @@ class VMParser(object):
         ''' returns the line's second argument as a string '''
         
         splitLine = line.split()
-        correctArgNum = (len(splitLine) == 3)       # check for correct number of arguments to process
+        correctArgNum = (len(splitLine) == VMParser.MAX_ARGS)    # check for correct number of arguments to process
 
-        if len(splitLine) < 3:
+        if len(splitLine) < VMParser.MAX_ARGS:
             result = None
         elif correctArgNum:      
             result = splitLine[VMParser.ARG2]
@@ -141,7 +142,7 @@ class VMParser(object):
             line = line.strip()                       #leading and trailing whitespace removal
             line = self.__filterOutEOLComments__(line)
             
-            if len(line) > 0:                          #empty line removal
+            if len(line) > 0:                         #empty line removal
                 filteredList.append(line)
         
         return filteredList   
